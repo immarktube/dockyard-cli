@@ -5,6 +5,7 @@ import (
 	"github.com/immarktube/dockyard-cli/command"
 	"github.com/immarktube/dockyard-cli/config"
 	"github.com/immarktube/dockyard-cli/executor"
+	"github.com/immarktube/dockyard-cli/utils"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -21,12 +22,13 @@ var statusCmd = &cobra.Command{
 		}
 
 		exec := &executor.RealExecutor{Env: cfg.Env}
-		for _, repo := range cfg.Repositories {
+
+		utils.ForEachRepoConcurrently(cfg.Repositories, func(repo config.Repository) {
 			fmt.Printf("\n==> Checking status for %s\n", repo.Path)
 
 			if err := command.RunWithHooks(cfg, exec, repo, []string{"status"}); err != nil {
 				_, _ = fmt.Fprintf(os.Stderr, "Error checking status for %s: %v\n", repo.Path, err)
 			}
-		}
+		})
 	},
 }

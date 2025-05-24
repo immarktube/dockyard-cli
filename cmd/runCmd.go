@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"github.com/immarktube/dockyard-cli/config"
+	"github.com/immarktube/dockyard-cli/utils"
 	"os"
 	"os/exec"
 	"strings"
@@ -32,5 +33,15 @@ var runCmd = &cobra.Command{
 				_, _ = fmt.Fprintf(os.Stderr, "Error running command in %s: %v\n", repo.Path, err)
 			}
 		}
+		utils.ForEachRepoConcurrently(cfg.Repositories, func(repo config.Repository) {
+			fmt.Printf("\n==> Running command in %s\n", repo.Path)
+			c := exec.Command("sh", "-c", commandStr)
+			c.Dir = repo.Path
+			c.Stdout = os.Stdout
+			c.Stderr = os.Stderr
+			if err := c.Run(); err != nil {
+				_, _ = fmt.Fprintf(os.Stderr, "Error running command in %s: %v\n", repo.Path, err)
+			}
+		})
 	},
 }

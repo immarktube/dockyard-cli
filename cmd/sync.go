@@ -5,9 +5,9 @@ import (
 	"github.com/immarktube/dockyard-cli/command"
 	"github.com/immarktube/dockyard-cli/config"
 	"github.com/immarktube/dockyard-cli/executor"
-	"os"
-
+	"github.com/immarktube/dockyard-cli/utils"
 	"github.com/spf13/cobra"
+	"os"
 )
 
 var syncCmd = &cobra.Command{
@@ -19,14 +19,16 @@ var syncCmd = &cobra.Command{
 			_, _ = fmt.Fprintf(os.Stderr, "Error loading config: %v\n", err)
 			os.Exit(1)
 		}
-
 		exec := &executor.RealExecutor{Env: cfg.Env}
-		for _, repo := range cfg.Repositories {
-			fmt.Printf("\n==> Pulling %s\n", repo.Path)
-			cmd := &command.GitCommand{Repo: repo, Executor: exec, Args: []string{"pull"}}
-			if err := cmd.Run(); err != nil {
-				_, _ = fmt.Fprintf(os.Stderr, "Error pulling %s: %v\n", repo.Path, err)
+		utils.ForEachRepoConcurrently(cfg.Repositories, func(repo config.Repository) {
+			fmt.Printf("\n==> Fetching and Pulling %s\n", repo.Path)
+			command.RunGit(repo, exec, "fetch", "--all")
+			command.RunGit(repo, exec, "pull")
+			if len(command.GetFailedRepos()) > 0 {
+				fmt.Println("Some repositories failed at stage fetching and pulling:\n", command.GetFailedRepos())
+				command.ClearFailedRepos()
 			}
-		}
+		})
+
 	},
 }

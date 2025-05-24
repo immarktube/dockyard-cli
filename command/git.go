@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+	"sync"
 )
 
 type GitCommand struct {
@@ -19,6 +20,37 @@ func (g *GitCommand) Run() error {
 	output, err := g.Executor.RunCommand(g.Repo.Path, "git", g.Args...)
 	fmt.Print(output)
 	return err
+}
+
+var (
+	mu          sync.Mutex
+	failedRepos []string
+)
+
+// RunGit executes a git command and tracks failures.
+func RunGit(repo config.Repository, exec executor.Executor, args ...string) {
+	fmt.Printf("==> %s: git %s\n", repo.Path, strings.Join(args, " "))
+	cmd := GitCommand{Repo: repo, Executor: exec, Args: args}
+	if err := cmd.Run(); err != nil {
+		_, _ = fmt.Fprintf(os.Stderr, "Error running git %s in %s: %v\n", strings.Join(args, " "), repo.Path, err)
+		mu.Lock()
+		failedRepos = append(failedRepos, repo.Path)
+		mu.Unlock()
+	}
+}
+
+// GetFailedRepos returns the list of failed repos
+func GetFailedRepos() []string {
+	mu.Lock()
+	defer mu.Unlock()
+	return append([]string{}, failedRepos...) // 返回副本避免外部修改
+}
+
+// ClearFailedRepos resets the failure list
+func ClearFailedRepos() {
+	mu.Lock()
+	defer mu.Unlock()
+	failedRepos = nil
 }
 
 func runShellScript(dir, script string, env map[string]string) error {
