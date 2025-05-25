@@ -33,6 +33,7 @@ var runCmd = &cobra.Command{
 				_, _ = fmt.Fprintf(os.Stderr, "Error running command in %s: %v\n", repo.Path, err)
 			}
 		}
+		maxConcurrency := utils.GetConcurrency(maxConcurrency, cfg)
 		utils.ForEachRepoConcurrently(cfg.Repositories, func(repo config.Repository) {
 			fmt.Printf("\n==> Running command in %s\n", repo.Path)
 			c := exec.Command("sh", "-c", commandStr)
@@ -42,6 +43,6 @@ var runCmd = &cobra.Command{
 			if err := c.Run(); err != nil {
 				_, _ = fmt.Fprintf(os.Stderr, "Error running command in %s: %v\n", repo.Path, err)
 			}
-		})
+		}, maxConcurrency)
 	},
 }

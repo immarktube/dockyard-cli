@@ -21,8 +21,9 @@ type Hook struct {
 
 type Config struct {
 	Repositories []Repository      `yaml:"repositories"`
-	Hooks        Hook              `yaml:"hook"` // 全局hook，保持不变
-	Env          map[string]string // 从 .env 加载的环境变量
+	Hooks        Hook              `yaml:"hook"`
+	Env          map[string]string // load environment variable from .env
+	Concurrency  int               `yaml:"concurrency"`
 }
 
 func LoadConfig() (*Config, error) {

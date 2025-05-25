@@ -22,7 +22,7 @@ var pushCmd = &cobra.Command{
 		}
 
 		exec := &executor.RealExecutor{Env: cfg.Env}
-
+		maxConcurrency := utils.GetConcurrency(maxConcurrency, cfg)
 		utils.ForEachRepoConcurrently(cfg.Repositories, func(repo config.Repository) {
 			fmt.Printf("\n==> Pushing %s\n", repo.Path)
 			command.RunGit(repo, exec, "push", ".", "HEAD")
@@ -30,6 +30,6 @@ var pushCmd = &cobra.Command{
 				_, _ = fmt.Fprintf(os.Stderr, "Error pushing %s: %v\n", command.GetFailedRepos(), err)
 				command.ClearFailedRepos()
 			}
-		})
+		}, maxConcurrency)
 	},
 }

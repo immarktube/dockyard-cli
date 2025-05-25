@@ -66,11 +66,5 @@ var checkoutCmd = &cobra.Command{
 			}
 		}
 
-		//utils.ForEachRepoConcurrently(cfg.Repositories, func(repo config.Repository) {
-		//	if err := switchToBranch(repo, exec, branch); err != nil {
-		//		_, _ = fmt.Fprintf(os.Stderr, "Error: %v\n", err)
-		//	}
-		//})
-
 	},
 }

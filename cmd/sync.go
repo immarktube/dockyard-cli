@@ -20,6 +20,7 @@ var syncCmd = &cobra.Command{
 			os.Exit(1)
 		}
 		exec := &executor.RealExecutor{Env: cfg.Env}
+		maxConcurrency := utils.GetConcurrency(maxConcurrency, cfg)
 		utils.ForEachRepoConcurrently(cfg.Repositories, func(repo config.Repository) {
 			fmt.Printf("\n==> Fetching and Pulling %s\n", repo.Path)
 			command.RunGit(repo, exec, "fetch", "--all")
@@ -28,7 +29,7 @@ var syncCmd = &cobra.Command{
 				fmt.Println("Some repositories failed at stage fetching and pulling:\n", command.GetFailedRepos())
 				command.ClearFailedRepos()
 			}
-		})
+		}, maxConcurrency)
 
 	},
 }
