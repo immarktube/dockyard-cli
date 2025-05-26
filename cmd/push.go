@@ -17,7 +17,7 @@ var pushCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		cfg, err := config.LoadConfig()
 		if err != nil {
-			_, _ = fmt.Fprintf(os.Stderr, "Error loading config: %v\n", err)
+			utils.SafeError("Error loading config: %v\n", err)
 			os.Exit(1)
 		}
 
@@ -25,9 +25,9 @@ var pushCmd = &cobra.Command{
 		maxConcurrency := utils.GetConcurrency(maxConcurrency, cfg)
 		utils.ForEachRepoConcurrently(cfg.Repositories, func(repo config.Repository) {
 			fmt.Printf("\n==> Pushing %s\n", repo.Path)
-			command.RunGit(repo, exec, "push", ".", "HEAD")
+			command.RunGit(repo, exec, "push", "origin", "HEAD")
 			if len(command.GetFailedRepos()) > 0 {
-				_, _ = fmt.Fprintf(os.Stderr, "Error pushing %s: %v\n", command.GetFailedRepos(), err)
+				utils.SafeError("Error pushing %s: %v\n", command.GetFailedRepos(), err)
 				command.ClearFailedRepos()
 			}
 		}, maxConcurrency)

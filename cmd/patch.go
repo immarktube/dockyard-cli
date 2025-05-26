@@ -78,7 +78,11 @@ var patchCmd = &cobra.Command{
 			if msg == "" {
 				msg = fmt.Sprintf("chore: patch file %s", patchFile)
 			}
-			exec.RunCommand(repo.Path, "git", "commit", "-m", msg)
+			out, err := exec.RunCommand(repo.Path, "git", "commit", "-m", msg)
+			if err != nil {
+				utils.SafeError("❌ Failed to commit in %s: %v\nOutput: %s\\n", repo.Path, err, out)
+				return
+			}
 		}, maxConcurrency)
 
 		return nil

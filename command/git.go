@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/immarktube/dockyard-cli/config"
 	"github.com/immarktube/dockyard-cli/executor"
+	"github.com/immarktube/dockyard-cli/utils"
 	"os"
 	"os/exec"
 	"strings"
@@ -18,7 +19,7 @@ type GitCommand struct {
 
 func (g *GitCommand) Run() error {
 	output, err := g.Executor.RunCommand(g.Repo.Path, "git", g.Args...)
-	fmt.Print(output)
+	utils.SafePrint(output)
 	return err
 }
 
