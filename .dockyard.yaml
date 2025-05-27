@@ -1,0 +1,17 @@
+global:
+  owner: immarktube
+  authToken: ${GITHUB_TOKEN}
+  apiBaseURL: https://api.github.com
+
+repositories:
+  - path: ./kubernetesDemo/
+  - path: ./careeranalyse-web/
+
+hook:
+  pre: echo "Running pre hook"
+  post: echo "Running post hook"
+
+
+commands:
+  test:
+    - go test ./...

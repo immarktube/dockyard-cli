@@ -61,7 +61,7 @@ func CreatePullRequest(repo config.Repository, title, body string) error {
 	req.Header.Set("Authorization", "token "+repo.AuthToken)
 	req.Header.Set("Accept", "application/vnd.github.v3+json")
 	req.Header.Set("Content-Type", "application/json")
-
+	fmt.Printf("Creating PR: repo=%s/%s head=%s base=main\n", repo.Owner, repo.Name, repo.Branch)
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return err

@@ -24,7 +24,7 @@ var syncCmd = &cobra.Command{
 		utils.ForEachRepoConcurrently(cfg.Repositories, func(repo config.Repository) {
 			fmt.Printf("\n==> Fetching and Pulling %s\n", repo.Path)
 			command.RunGit(repo, exec, "fetch", "--all")
-			command.RunGit(repo, exec, "pull")
+			command.RunGit(repo, exec, "pull", "--rebase", "--autostash")
 			if len(command.GetFailedRepos()) > 0 {
 				fmt.Println("Some repositories failed at stage fetching and pulling:\n", command.GetFailedRepos())
 				command.ClearFailedRepos()
