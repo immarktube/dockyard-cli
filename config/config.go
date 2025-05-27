@@ -10,8 +10,20 @@ import (
 )
 
 type Repository struct {
-	Path string `yaml:"path"`
-	Hook *Hook  `yaml:"hook,omitempty"` // 新增，支持仓库单独hook配置
+	Path       string `yaml:"path"`
+	Hook       *Hook  `yaml:"hook,omitempty"`
+	URL        string `yaml:"url,omitempty"`
+	Owner      string `yaml:"owner,omitempty"`
+	Name       string `yaml:"name,omitempty"`
+	AuthToken  string `yaml:"authToken,omitempty"`
+	APIBaseURL string `yaml:"apiBaseURL,omitempty"`
+	Branch     string `yaml:"branch,omitempty"`
+}
+
+type GlobalConfig struct {
+	Owner      string `yaml:"owner,omitempty"`
+	AuthToken  string `yaml:"authToken,omitempty"`
+	APIBaseURL string `yaml:"apiBaseURL,omitempty"`
 }
 
 type Hook struct {
@@ -21,6 +33,7 @@ type Hook struct {
 
 type Config struct {
 	Repositories []Repository      `yaml:"repositories"`
+	Global       GlobalConfig      `yaml:"global,omitempty"`
 	Hooks        Hook              `yaml:"hook"`
 	Env          map[string]string // load environment variable from .env
 	Concurrency  int               `yaml:"concurrency"`
@@ -47,6 +60,20 @@ func LoadConfig() (*Config, error) {
 	for k, v := range cfg.Env {
 		if _, exists := os.LookupEnv(k); !exists {
 			os.Setenv(k, v)
+		}
+	}
+
+	// Apply global defaults
+	for i := range cfg.Repositories {
+		repo := &cfg.Repositories[i]
+		if repo.Owner == "" {
+			repo.Owner = cfg.Global.Owner
+		}
+		if repo.AuthToken == "" {
+			repo.AuthToken = cfg.Global.AuthToken
+		}
+		if repo.APIBaseURL == "" {
+			repo.APIBaseURL = cfg.Global.APIBaseURL
 		}
 	}
 

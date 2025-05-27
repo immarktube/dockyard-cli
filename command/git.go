@@ -19,7 +19,7 @@ type GitCommand struct {
 
 func (g *GitCommand) Run() error {
 	output, err := g.Executor.RunCommand(g.Repo.Path, "git", g.Args...)
-	utils.SafePrint(output)
+	utils.SafePrint("Running git command: %s", output)
 	return err
 }
 
