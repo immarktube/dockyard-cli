@@ -34,7 +34,7 @@ go install github.com/immarktube/dockyard-cli@latest
 dockyard-cli run
 ```
 
-详细的使用指南请参考：[Dockyard CLI 使用指南](https://immarktube.github.io/dockyard-cli/)
+详细的使用指南请参考：[Dockyard CLI 使用指南](https://github.com/immarktube/dockyard-cli/wiki)
 
 ---
 
