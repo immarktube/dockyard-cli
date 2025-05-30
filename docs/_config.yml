@@ -1,1 +1,5 @@
-theme: jekyll-theme-Architect
+title: Dockyard CLI
+description: A command-line tool for build and deployment automation
+theme: jekyll-theme-architect
+show_downloads: false
+google_analytics:

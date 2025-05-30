@@ -1,6 +1,11 @@
-# Dockyard
+---
+layout: default
+title: Dockyard CLI
+---
 
-A tool for manage multiple projects with ease.
+<nav>
+  <a href="/dockyard-cli/index.zh.html">简体中文</a> |
+  <strong>English</strong>
+</nav>
 
-
-项目地址：[Dockyard](https://github.com/immarktube/dockyard-cli)
+{% include_relative dockyard-cli-intro-en.md %}
