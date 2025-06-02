@@ -30,8 +30,6 @@ var prCmd = &cobra.Command{
 			err := utils.CreatePullRequest(repo, prTitle, prBody)
 			if err != nil {
 				fmt.Fprintf(os.Stderr, "❌ Failed to create PR for %s: %v\n", repo.Path, err)
-			} else {
-				fmt.Printf("✅ PR created for %s\n", repo.Path)
 			}
 		}, 5)
 
