@@ -31,7 +31,7 @@ go install github.com/immarktube/dockyard-cli@latest
 2. 运行以下命令执行任务：
 
 ```bash
-dockyard-cli run
+dockyard-cli command-name
 ```
 
 详细的使用指南请参考：[Dockyard CLI 使用指南](https://github.com/immarktube/dockyard-cli/wiki)
@@ -49,6 +49,7 @@ dockyard-cli/
 ├── executor/        # 任务执行器
 ├── utils/           # 工具函数
 ├── .dockyard.yaml   # 示例配置文件
+├── .env             # 示例配置文件
 ├── main.go          # 主程序入口
 └── build.sh         # 构建脚本
 ```
@@ -58,16 +59,25 @@ dockyard-cli/
 ## 📄 示例配置 `.dockyard.yaml`
 
 ```yaml
-build:
-  steps:
-    - name: 编译项目
-      command: go build -o bin/app main.go
-    - name: 运行测试
-      command: go test ./...
-deploy:
-  steps:
-    - name: 部署到服务器
-      command: scp bin/app user@server:/path/to/deploy
+global:
+  owner: immarktube
+  authToken: ${GITHUB_TOKEN}
+  apiBaseURL: https://api.github.com
+  concurrency: 5
+
+repositories:
+  - path: ./repo_name1/
+  - path: ./repo_name2/
+
+hook:
+  pre: echo "Running pre hook"
+  post: echo "Running post hook"
+```
+
+## 📄 Example `.env`
+
+```env
+GITHUB_TOKEN=ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
 ---

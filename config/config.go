@@ -21,9 +21,10 @@ type Repository struct {
 }
 
 type GlobalConfig struct {
-	Owner      string `yaml:"owner,omitempty"`
-	AuthToken  string `yaml:"authToken,omitempty"`
-	APIBaseURL string `yaml:"apiBaseURL,omitempty"`
+	Owner       string `yaml:"owner,omitempty"`
+	AuthToken   string `yaml:"authToken,omitempty"`
+	APIBaseURL  string `yaml:"apiBaseURL,omitempty"`
+	Concurrency int    `yaml:"concurrency,omitempty"`
 }
 
 type Hook struct {
@@ -36,7 +37,6 @@ type Config struct {
 	Global       GlobalConfig      `yaml:"global,omitempty"`
 	Hooks        Hook              `yaml:"hook"`
 	Env          map[string]string // load environment variable from .env
-	Concurrency  int               `yaml:"concurrency"`
 }
 
 func LoadConfig() (*Config, error) {

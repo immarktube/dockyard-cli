@@ -2,6 +2,7 @@ global:
   owner: immarktube
   authToken: ${GITHUB_TOKEN}
   apiBaseURL: https://api.github.com
+  concurrency: 5
 
 repositories:
   - path: ./kubernetesDemo/
@@ -10,8 +11,3 @@ repositories:
 hook:
   pre: echo "Running pre hook"
   post: echo "Running post hook"
-
-
-commands:
-  test:
-    - go test ./...

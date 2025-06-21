@@ -31,8 +31,8 @@ func GetConcurrency(cmdConcurrency int, cfg *config.Config) int {
 	if cmdConcurrency > 0 {
 		return cmdConcurrency
 	}
-	if cfg != nil && cfg.Concurrency > 0 {
-		return cfg.Concurrency
+	if cfg != nil && cfg.Global.Concurrency > 0 {
+		return cfg.Global.Concurrency
 	}
 	return 5
 }

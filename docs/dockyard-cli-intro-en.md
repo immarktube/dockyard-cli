@@ -31,7 +31,7 @@ go install github.com/immarktube/dockyard-cli@latest
 2. Run your tasks using:
 
 ```bash
-dockyard-cli run
+dockyard command-name
 ```
 
 For detailed usage instructions, visit: [Dockyard CLI Documentation](https://github.com/immarktube/dockyard-cli/wiki)
@@ -49,6 +49,7 @@ dockyard-cli/
 ├── executor/        # Task runner
 ├── utils/           # Utility functions
 ├── .dockyard.yaml   # Example config file
+├── .env             # Example config file
 ├── main.go          # Entry point
 └── build.sh         # Build script
 ```
@@ -58,16 +59,25 @@ dockyard-cli/
 ## 📄 Example `.dockyard.yaml`
 
 ```yaml
-build:
-  steps:
-    - name: Build the project
-      command: go build -o bin/app main.go
-    - name: Run tests
-      command: go test ./...
-deploy:
-  steps:
-    - name: Deploy to server
-      command: scp bin/app user@server:/path/to/deploy
+global:
+  owner: immarktube
+  authToken: ${GITHUB_TOKEN}
+  apiBaseURL: https://api.github.com
+  concurrency: 5
+
+repositories:
+  - path: ./repo_name1/
+  - path: ./repo_name2/
+
+hook:
+  pre: echo "Running pre hook"
+  post: echo "Running post hook"
+```
+
+## 📄 Example `.env`
+
+```env
+GITHUB_TOKEN=ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
 ---
