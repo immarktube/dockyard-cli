@@ -12,7 +12,7 @@ import (
 
 var syncCmd = &cobra.Command{
 	Use:   "sync",
-	Short: "Run 'git pull' across all repositories",
+	Short: "Run 'git fetch' and 'git pull' across all repositories",
 	Run: func(cmd *cobra.Command, args []string) {
 		cfg, err := config.LoadConfig()
 		if err != nil {
