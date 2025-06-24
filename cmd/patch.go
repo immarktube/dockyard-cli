@@ -25,7 +25,6 @@ var (
 var patchCmd = &cobra.Command{
 	Use:   "patch",
 	Short: "Modify a specific file in all repositories and commit the change.",
-	Long:  "Modify a specific file in all repositories and commit the change.\n\n",
 	Example: `dockyard patch --file .env --old 'DB_HOST=localhost' --new 'DB_HOST=
 db.example.com' --message 'Update database host'`,
 	RunE: func(cmd *cobra.Command, args []string) error {

@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-// inferRepoNameFromPath tries to extract repository name from local path
+// inferRepoNameFromPath tries to extract repository name from a local path
 func inferRepoNameFromPath(path string) string {
 	if path == "" {
 		return ""
@@ -27,5 +27,10 @@ func BuildRemoteURL(repo config.Repository, global config.GlobalConfig) string {
 	if owner == "" {
 		owner = global.Owner
 	}
-	return fmt.Sprintf("%s/%s/%s.git", base, owner, repo.Path)
+	name := repo.Name
+	if name == "" {
+		name = inferRepoNameFromPath(repo.Path)
+	}
+
+	return fmt.Sprintf("%s/%s/%s.git", base, owner, name)
 }

@@ -24,6 +24,7 @@ type GlobalConfig struct {
 	Owner       string `yaml:"owner,omitempty"`
 	AuthToken   string `yaml:"authToken,omitempty"`
 	APIBaseURL  string `yaml:"apiBaseURL,omitempty"`
+	GitBaseURL  string `yaml:"gitBaseURL,omitempty"`
 	Concurrency int    `yaml:"concurrency,omitempty"`
 }
 
@@ -102,7 +103,7 @@ func GetHooksForRepo(cfg *Config, repo Repository) Hook {
 	return cfg.Hooks
 }
 
-// inferRepoNameFromPath tries to extract repository name from local path
+// inferRepoNameFromPath tries to extract repository name from a local path
 func inferRepoNameFromPath(path string) string {
 	if path == "" {
 		return ""

@@ -7,6 +7,7 @@ import (
 	"github.com/immarktube/dockyard-cli/utils"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"strings"
 	"sync"
 )
@@ -52,6 +53,39 @@ func ClearFailedRepos() {
 	mu.Lock()
 	defer mu.Unlock()
 	failedRepos = nil
+}
+
+// CloneRepo clones a Git repository into the specified path.
+func CloneRepo(remoteURL string, repo config.Repository, globalConfig config.GlobalConfig) {
+
+	// 确保目标目录的父路径存在
+	parentDir := filepath.Dir(repo.Path)
+	if err := os.MkdirAll(parentDir, 0755); err != nil {
+		utils.SafeError("❌ Failed to create parent directory %s: %v\n", parentDir, err)
+		return
+	}
+
+	if globalConfig.AuthToken != "" {
+		// 如果配置了全局认证令牌，则注入到远程 URL 中
+		remoteURL = injectToken(remoteURL, globalConfig.AuthToken)
+	}
+
+	// 执行 git clone
+	cmd := exec.Command("git", "clone", remoteURL, repo.Path)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	utils.SafePrint("🚀 Cloning %s into %s...\n", remoteURL, repo.Path)
+	if err := cmd.Run(); err != nil {
+		utils.SafeError("❌ Failed to clone %s: %v\n", repo.Path, err)
+	}
+}
+
+func injectToken(cloneURL, token string) string {
+	if strings.HasPrefix(cloneURL, "https://") {
+		return strings.Replace(cloneURL, "https://", fmt.Sprintf("https://%s@", token), 1)
+	}
+	return cloneURL
 }
 
 func runShellScript(dir, script string, env map[string]string) error {

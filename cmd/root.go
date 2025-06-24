@@ -31,7 +31,7 @@ func init() {
 	rootCmd.AddCommand(syncCmd)
 	rootCmd.AddCommand(statusCmd)
 	rootCmd.AddCommand(pushCmd)
-	rootCmd.AddCommand(patchCmd)
+	rootCmd.AddCommand(cloneCmd)
 	rootCmd.AddCommand(execCmd)
 	rootCmd.AddCommand(checkoutCmd)
 	rootCmd.AddCommand(runCmd)
