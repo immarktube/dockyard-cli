@@ -109,6 +109,14 @@ func runShellScript(dir, script string, env map[string]string) error {
 func RunWithHooks(cfg *config.Config, exec executor.Executor, repo config.Repository, args []string) error {
 	hooks := config.GetHooksForRepo(cfg, repo) // 使用新函数
 
+	if utils.NoHookFlag || cfg.Global.NoHook {
+		git := GitCommand{Repo: repo, Executor: exec, Args: args}
+		if err := git.Run(); err != nil {
+			return err
+		}
+		return nil
+	}
+
 	if err := runShellScript(repo.Path, hooks.Pre, cfg.Env); err != nil {
 		return fmt.Errorf("pre-hook failed: %w", err)
 	}

@@ -4,6 +4,7 @@ global:
   apiBaseURL: https://api.github.com
   gitBaseURL: https://github.com
   concurrency: 5
+  noHook: true
 
 repositories:
   - path: kubernetesDemo

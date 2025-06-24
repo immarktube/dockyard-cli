@@ -26,6 +26,7 @@ type GlobalConfig struct {
 	APIBaseURL  string `yaml:"apiBaseURL,omitempty"`
 	GitBaseURL  string `yaml:"gitBaseURL,omitempty"`
 	Concurrency int    `yaml:"concurrency,omitempty"`
+	NoHook      bool   `yaml:"noHook,omitempty"`
 }
 
 type Hook struct {

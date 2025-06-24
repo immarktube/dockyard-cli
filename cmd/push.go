@@ -22,7 +22,7 @@ var pushCmd = &cobra.Command{
 		}
 
 		exec := &executor.RealExecutor{Env: cfg.Env}
-		maxConcurrency := utils.GetConcurrency(maxConcurrency, cfg)
+		maxConcurrency := utils.GetConcurrency(utils.MaxConcurrency, cfg)
 		utils.ForEachRepoConcurrently(cfg.Repositories, func(repo config.Repository) {
 			fmt.Printf("\n==> Pushing %s\n", repo.Path)
 			command.RunGit(repo, exec, "push", "origin", "HEAD")

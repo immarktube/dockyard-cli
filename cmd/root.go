@@ -17,8 +17,6 @@ var rootCmd = &cobra.Command{
 	},
 }
 
-var maxConcurrency int
-
 // Execute is the CLI entry point
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
@@ -35,5 +33,6 @@ func init() {
 	rootCmd.AddCommand(execCmd)
 	rootCmd.AddCommand(checkoutCmd)
 	rootCmd.AddCommand(runCmd)
-	rootCmd.PersistentFlags().IntVar(&maxConcurrency, "concurrency", 5, "Global max concurrency (overridden by command-level settings if set)")
+	rootCmd.PersistentFlags().IntVar(&utils.MaxConcurrency, "max-concurrency", 5, "Global max concurrency (overridden by command-level settings if set)")
+	rootCmd.PersistentFlags().BoolVar(&utils.NoHookFlag, "no-hook", false, "Disable pre/post hooks")
 }

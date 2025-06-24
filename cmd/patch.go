@@ -34,7 +34,7 @@ db.example.com' --message 'Update database host'`,
 		}
 
 		exec := &executor.RealExecutor{Env: cfg.Env}
-		maxConcurrency := utils.GetConcurrency(maxConcurrency, cfg)
+		maxConcurrency := utils.GetConcurrency(utils.MaxConcurrency, cfg)
 		utils.ForEachRepoConcurrently(cfg.Repositories, func(repo config.Repository) {
 			targetFile := filepath.Join(repo.Path, patchFile)
 

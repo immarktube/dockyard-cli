@@ -20,7 +20,7 @@ var syncCmd = &cobra.Command{
 			os.Exit(1)
 		}
 		exec := &executor.RealExecutor{Env: cfg.Env}
-		maxConcurrency := utils.GetConcurrency(maxConcurrency, cfg)
+		maxConcurrency := utils.GetConcurrency(utils.MaxConcurrency, cfg)
 		utils.ForEachRepoConcurrently(cfg.Repositories, func(repo config.Repository) {
 			fmt.Printf("\n==> Fetching and Pulling %s\n", repo.Path)
 			command.RunGit(repo, exec, "fetch", "--all")

@@ -22,7 +22,7 @@ var execCmd = &cobra.Command{
 			os.Exit(1)
 		}
 		exec := &executor.RealExecutor{Env: cfg.Env}
-		maxConcurrency = utils.GetConcurrency(maxConcurrency, cfg)
+		maxConcurrency := utils.GetConcurrency(utils.MaxConcurrency, cfg)
 		utils.ForEachRepoConcurrently(cfg.Repositories, func(repo config.Repository) {
 			fmt.Printf("\n==> Executing git %v in %s\n", args, repo.Path)
 

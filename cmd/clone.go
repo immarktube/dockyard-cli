@@ -19,7 +19,7 @@ var cloneCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		maxConcurrency := utils.GetConcurrency(maxConcurrency, cfg)
+		maxConcurrency := utils.GetConcurrency(utils.MaxConcurrency, cfg)
 		utils.ForEachRepoConcurrently(cfg.Repositories, func(repo config.Repository) {
 			repoPath := repo.Path
 			if _, err := os.Stat(repoPath); os.IsNotExist(err) {
