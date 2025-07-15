@@ -1,17 +1,22 @@
 package cmd
 
 import (
+	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 
 	"github.com/immarktube/dockyard-cli/config"
+	"github.com/immarktube/dockyard-cli/executor"
 	"github.com/immarktube/dockyard-cli/utils"
 	"github.com/spf13/cobra"
 )
 
 var (
-	sourcePath string
-	targetPath string
+	sourcePath    string
+	targetPath    string
+	copyCommitMsg string
+	copyDryRun    bool
 )
 
 var copyFileCmd = &cobra.Command{
@@ -23,13 +28,14 @@ var copyFileCmd = &cobra.Command{
 			return err
 		}
 		maxConcurrency := utils.GetConcurrency(utils.MaxConcurrency, cfg)
+		exec := &executor.RealExecutor{Env: cfg.Env}
+
 		utils.ForEachRepoConcurrently(cfg.Repositories, func(repo config.Repository) {
 			src := filepath.Join(repo.Path, sourcePath)
 			dst := filepath.Join(repo.Path, targetPath)
 
-			content, err := os.ReadFile(src)
-			if err != nil {
-				utils.SafeError("❌ Failed to read from %s: %v\n", src, err)
+			if copyDryRun {
+				utils.SafePrint("📝 Dry-run: Would copy %s → %s\n", src, dst)
 				return
 			}
 
@@ -39,13 +45,23 @@ var copyFileCmd = &cobra.Command{
 				return
 			}
 
-			err = os.WriteFile(dst, content, 0644)
-			if err != nil {
-				utils.SafeError("❌ Failed to write to %s: %v\n", dst, err)
+			if err := copyFile(src, dst); err != nil {
+				utils.SafeError("❌ Failed to copy %s to %s: %v\n", src, dst, err)
 				return
 			}
 
 			utils.SafePrint("✅ Copied %s → %s\n", src, dst)
+
+			exec.RunCommand(repo.Path, "git", "add", targetPath)
+			msg := copyCommitMsg
+			if msg == "" {
+				msg = fmt.Sprintf("dockyard: copy file %s", targetPath)
+			}
+			out, err := exec.RunCommand(repo.Path, "git", "commit", "-m", msg)
+			if err != nil {
+				utils.SafeError("❌ Failed to commit in %s: %v\nOutput: %s\\n", repo.Path, err, out)
+				return
+			}
 		}, maxConcurrency)
 
 		return nil
@@ -56,6 +72,28 @@ func init() {
 	rootCmd.AddCommand(copyFileCmd)
 	copyFileCmd.Flags().StringVar(&sourcePath, "source", "", "Source relative file path (required)")
 	copyFileCmd.Flags().StringVar(&targetPath, "target", "", "Target relative file path (required)")
+	copyFileCmd.Flags().StringVar(&copyCommitMsg, "message", "", "Optional commit message")
+	copyFileCmd.Flags().BoolVar(&copyDryRun, "dry-run", false, "Preview the copy and commit without making changes")
+
 	copyFileCmd.MarkFlagRequired("source")
 	copyFileCmd.MarkFlagRequired("target")
+}
+
+func copyFile(src, dst string) error {
+	in, err := os.Open(src)
+	if err != nil {
+		return err
+	}
+	defer in.Close()
+
+	out, err := os.Create(dst)
+	if err != nil {
+		return err
+	}
+	defer out.Close()
+
+	if _, err := io.Copy(out, in); err != nil {
+		return err
+	}
+	return out.Sync()
 }
