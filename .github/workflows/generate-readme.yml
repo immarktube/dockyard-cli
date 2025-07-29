@@ -19,13 +19,13 @@ jobs:
 
       - name: Generate README.md
         run: |
-          cat ./docs/dockyard-cli-intro-en.md >> ./docs/README.md
+          cat ./docs/dockyard-cli-intro-en.md > ./docs/README.md
 
       - name: Commit and push if changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add ./docs/README.md
-          git diff --quiet && echo "No changes to commit" || git commit -m "chore: auto-generate README.md"
+          git diff --cached --quiet && echo "No changes to commit" || git commit -m "chore: auto-generate README.md"
           git push
 
