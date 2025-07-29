@@ -72,11 +72,12 @@ func init() {
 	rootCmd.AddCommand(copyFileCmd)
 	copyFileCmd.Flags().StringVar(&sourcePath, "source", "", "Source relative file path (required)")
 	copyFileCmd.Flags().StringVar(&targetPath, "target", "", "Target relative file path (required)")
-	copyFileCmd.Flags().StringVar(&copyCommitMsg, "message", "", "Optional commit message")
+	copyFileCmd.Flags().StringVar(&copyCommitMsg, "message", "", "git commit message (required)")
 	copyFileCmd.Flags().BoolVar(&copyDryRun, "dry-run", false, "Preview the copy and commit without making changes")
 
 	copyFileCmd.MarkFlagRequired("source")
 	copyFileCmd.MarkFlagRequired("target")
+	copyFileCmd.MarkFlagRequired("message")
 }
 
 func copyFile(src, dst string) error {
