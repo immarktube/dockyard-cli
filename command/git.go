@@ -67,7 +67,7 @@ func CloneRepo(remoteURL string, repo config.Repository, globalConfig config.Glo
 
 	if globalConfig.AuthToken != "" {
 		// 如果配置了全局认证令牌，则注入到远程 URL 中
-		remoteURL = injectToken(remoteURL, globalConfig.AuthToken)
+		remoteURL = InjectToken(remoteURL, globalConfig.AuthToken)
 	}
 
 	// 执行 git clone
@@ -81,7 +81,7 @@ func CloneRepo(remoteURL string, repo config.Repository, globalConfig config.Glo
 	}
 }
 
-func injectToken(cloneURL, token string) string {
+func InjectToken(cloneURL, token string) string {
 	if strings.HasPrefix(cloneURL, "https://") {
 		return strings.Replace(cloneURL, "https://", fmt.Sprintf("https://%s@", token), 1)
 	}

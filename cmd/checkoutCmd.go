@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"bufio"
 	"fmt"
 	"github.com/immarktube/dockyard-cli/command"
 	"github.com/immarktube/dockyard-cli/config"
@@ -12,36 +11,41 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func switchToBranch(repo config.Repository, exec executor.Executor, branch string) error {
-	fmt.Printf("==> Checking out branch '%s' in %s\n", branch, repo.Path)
+func isLikelyRemoteBranch(exec executor.Executor, repo config.Repository, base string) bool {
+	out, err := exec.RunCommand(repo.Path, "git", "ls-remote", "--heads", "origin", base)
+	return err == nil && strings.Contains(out, base)
+}
 
-	// 尝试切换本地分支
-	switchCmd := command.GitCommand{
-		Repo: repo, Executor: exec, Args: []string{"switch", branch},
+func checkoutBranch(repo config.Repository, exec executor.Executor, newBranch string) error {
+	fmt.Printf("==> %s: checking out branch '%s' from '%s'\n", newBranch, repo.Path)
+
+	cmd := command.GitCommand{
+		Repo: repo, Executor: exec,
+		Args: []string{"switch", newBranch},
 	}
-	if err := switchCmd.Run(); err == nil {
+	if err := cmd.Run(); err == nil {
 		return nil
 	}
 
-	// fallback：提示用户输入远程分支（默认 origin/master）
-	fmt.Printf("Failed to switch to '%s'.\n", branch)
-	fmt.Printf("Please enter the remote upstream branch to track (default: master): ")
-
-	reader := bufio.NewReader(os.Stdin)
-	input, _ := reader.ReadString('\n')
-	upstreamBranch := strings.TrimSpace(input)
-	if upstreamBranch == "" {
-		upstreamBranch = "master"
+	base := strings.TrimSpace(repo.BaseRef)
+	if base == "" {
+		base = "master"
 	}
 
-	// 创建并跟踪远程分支
+	isBranch := isLikelyRemoteBranch(exec, repo, base)
+	var args []string
+	if isBranch {
+		args = []string{"switch", "-c", newBranch, "--track", "origin/" + base}
+	} else {
+		args = []string{"switch", "-c", newBranch, base}
+	}
+
 	createCmd := command.GitCommand{
 		Repo: repo, Executor: exec,
-		Args: []string{"switch", "-c", branch, "--track", upstreamBranch},
+		Args: args,
 	}
 	if err := createCmd.Run(); err != nil {
-		return fmt.Errorf("failed to create and switch to branch '%s' tracking '%s': %w",
-			branch, upstreamBranch, err)
+		return fmt.Errorf("❌ failed to create/switch to branch '%s' from '%s': %w", newBranch, base, err)
 	}
 
 	return nil
@@ -61,7 +65,7 @@ var checkoutCmd = &cobra.Command{
 		exec := &executor.RealExecutor{Env: cfg.Env}
 
 		for _, repo := range cfg.Repositories {
-			if err := switchToBranch(repo, exec, branch); err != nil {
+			if err := checkoutBranch(repo, exec, branch); err != nil {
 				_, _ = fmt.Fprintf(os.Stderr, "Error: %v\n", err)
 			}
 		}

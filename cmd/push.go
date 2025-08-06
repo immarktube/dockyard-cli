@@ -7,6 +7,7 @@ import (
 	"github.com/immarktube/dockyard-cli/executor"
 	"github.com/immarktube/dockyard-cli/utils"
 	"os"
+	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -25,7 +26,14 @@ var pushCmd = &cobra.Command{
 		maxConcurrency := utils.GetConcurrency(utils.MaxConcurrency, cfg)
 		utils.ForEachRepoConcurrently(cfg.Repositories, func(repo config.Repository) {
 			fmt.Printf("\n==> Pushing %s\n", repo.Path)
-			command.RunGit(repo, exec, "push", "origin", "HEAD")
+			// Ensure token is injected into remote URL if needed
+			remoteUrl := utils.BuildRemoteURL(repo, cfg.Global)
+			if repo.AuthToken != "" && strings.HasPrefix(remoteUrl, "https://") {
+				authURL := command.InjectToken(remoteUrl, repo.AuthToken)
+				command.RunGit(repo, exec, "remote", "set-url", "origin", authURL)
+			}
+			// Use -u to establish upstream tracking
+			command.RunGit(repo, exec, "push", "-u", "origin", "HEAD")
 			if len(command.GetFailedRepos()) > 0 {
 				utils.SafeError("Error pushing %s: %v\n", command.GetFailedRepos(), err)
 				command.ClearFailedRepos()

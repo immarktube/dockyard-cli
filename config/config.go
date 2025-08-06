@@ -18,6 +18,7 @@ type Repository struct {
 	AuthToken  string `yaml:"authToken,omitempty"`
 	APIBaseURL string `yaml:"apiBaseURL,omitempty"`
 	Branch     string `yaml:"branch,omitempty"`
+	BaseRef    string `yaml:"baseRef,omitempty"`
 }
 
 type GlobalConfig struct {
