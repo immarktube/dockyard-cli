@@ -63,11 +63,17 @@ global:
   owner: immarktube
   authToken: ${GITHUB_TOKEN}
   apiBaseURL: https://api.github.com
+  gitBaseURL: https://github.com
   concurrency: 5
+  noHook: true
 
 repositories:
-  - path: ./repo_name1/
-  - path: ./repo_name2/
+  - path: kubernetesDemo
+    baseRef: fb6512a5b8a5b763e0b2e8634bad4cd713239c48
+  - path: careeranalyse-web
+    baseRef: 1.0.0
+  - path: readList
+    baseRef: master
 
 hook:
   pre: echo "Running pre hook"
