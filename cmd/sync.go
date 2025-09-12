@@ -8,6 +8,7 @@ import (
 	"github.com/immarktube/dockyard-cli/utils"
 	"github.com/spf13/cobra"
 	"os"
+	"strings"
 )
 
 var syncCmd = &cobra.Command{
@@ -23,6 +24,14 @@ var syncCmd = &cobra.Command{
 		maxConcurrency := utils.GetConcurrency(utils.MaxConcurrency, cfg)
 		utils.ForEachRepoConcurrently(cfg.Repositories, func(repo config.Repository) {
 			fmt.Printf("\n==> Fetching and Pulling %s\n", repo.Path)
+			base := strings.TrimSpace(repo.BaseRef)
+			if base == "" {
+				base = "master"
+			}
+			if !utils.IsLikelyRemoteBranch(exec, repo, base) {
+				fmt.Printf("\n==> %s is base on Git Tag or Commit Hash, Skip.. \n", repo.Path)
+				return
+			}
 			command.RunGit(repo, exec, "fetch", "--all")
 			command.RunGit(repo, exec, "pull", "--rebase", "--autostash")
 			if len(command.GetFailedRepos()) > 0 {

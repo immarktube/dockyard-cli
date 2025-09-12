@@ -5,16 +5,12 @@ import (
 	"github.com/immarktube/dockyard-cli/command"
 	"github.com/immarktube/dockyard-cli/config"
 	"github.com/immarktube/dockyard-cli/executor"
+	"github.com/immarktube/dockyard-cli/utils"
 	"os"
 	"strings"
 
 	"github.com/spf13/cobra"
 )
-
-func isLikelyRemoteBranch(exec executor.Executor, repo config.Repository, base string) bool {
-	out, err := exec.RunCommand(repo.Path, "git", "ls-remote", "--heads", "origin", base)
-	return err == nil && strings.Contains(out, base)
-}
 
 func checkoutBranch(repo config.Repository, exec executor.Executor, newBranch string) error {
 	fmt.Printf("==> %s: checking out branch '%s' from '%s'\n", newBranch, repo.Path)
@@ -32,7 +28,7 @@ func checkoutBranch(repo config.Repository, exec executor.Executor, newBranch st
 		base = "master"
 	}
 
-	isBranch := isLikelyRemoteBranch(exec, repo, base)
+	isBranch := utils.IsLikelyRemoteBranch(exec, repo, base)
 	var args []string
 	if isBranch {
 		args = []string{"switch", "-c", newBranch, "--track", "origin/" + base}

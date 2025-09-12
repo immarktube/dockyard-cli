@@ -3,6 +3,7 @@ package utils
 import (
 	"fmt"
 	"github.com/immarktube/dockyard-cli/config"
+	"github.com/immarktube/dockyard-cli/executor"
 	"strings"
 )
 
@@ -33,4 +34,8 @@ func BuildRemoteURL(repo config.Repository, global config.GlobalConfig) string {
 	}
 
 	return fmt.Sprintf("%s/%s/%s.git", base, owner, name)
+}
+func IsLikelyRemoteBranch(exec executor.Executor, repo config.Repository, base string) bool {
+	out, err := exec.RunCommand(repo.Path, "git", "ls-remote", "--heads", "origin", base)
+	return err == nil && strings.Contains(out, base)
 }
