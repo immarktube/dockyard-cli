@@ -1,6 +1,7 @@
 # 📦 Dockyard CLI
 
 **Dockyard CLI** 是一个基于 Go 语言开发的命令行工具，旨在简化和自动化项目的构建、部署和管理流程。
+它可以帮你管理成百上千个仓库的配置，这可以为您节省大量的时间和精力。
 
 🔗 项目主页：[immarktube.github.io/dockyard-cli](https://immarktube.github.io/dockyard-cli/)
 
@@ -19,10 +20,14 @@
 
 ### 安装
 
-确保已安装 Go 环境（版本 1.16 及以上）：
-
-```bash
-go install github.com/immarktube/dockyard-cli@latest
+在以下页面下载最新版本的可执行文件并放置在与众多本地仓库同级目录： 
+https://github.com/immarktube/dockyard-cli/releases
+```
+/your-workspace/
+├── dockyard-cli         # Dockyard CLI 可执行文件（需放在此处）
+├── kubernetesDemo       # 仓库1
+├── careeranalyse-web    # 仓库2
+├── readList             # 仓库3
 ```
 
 ### 使用
@@ -85,6 +90,7 @@ hook:
 ```env
 GITHUB_TOKEN=ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
+提示: 你一样可以将token直接定义在 **.dockyard.yaml** 中，但这会直接暴露你的敏感信息在配置文件中。
 
 ---
 
