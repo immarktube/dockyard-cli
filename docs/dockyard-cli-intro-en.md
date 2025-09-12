@@ -35,7 +35,7 @@ https://github.com/immarktube/dockyard-cli/releases
 2. Run your tasks using:
 
 ```bash
-dockyard command-name
+dockyard --help
 ```
 
 For detailed usage instructions, visit: [Dockyard CLI Documentation](https://github.com/immarktube/dockyard-cli/wiki)

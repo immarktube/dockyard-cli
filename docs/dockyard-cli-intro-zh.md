@@ -36,7 +36,7 @@ https://github.com/immarktube/dockyard-cli/releases
 2. 运行以下命令执行任务：
 
 ```bash
-dockyard-cli command-name
+dockyard --help
 ```
 
 详细的使用指南请参考：[Dockyard CLI 使用指南](https://github.com/immarktube/dockyard-cli/wiki)
