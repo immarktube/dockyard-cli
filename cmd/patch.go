@@ -13,15 +13,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var (
-	dryRun         bool
-	patchFile      string
-	patchOld       string
-	patchNew       string
-	patchRegex     bool
-	patchCommitMsg string
-)
-
 var patchCmd = &cobra.Command{
 	Use:   "patch",
 	Short: "Modify a specific file in all repositories and commit the change.",
@@ -35,6 +26,12 @@ db.example.com' --message 'Update database host'`,
 
 		exec := &executor.RealExecutor{Env: cfg.Env}
 		maxConcurrency := utils.GetConcurrency(utils.MaxConcurrency, cfg)
+		dryRun, _ := cmd.Flags().GetBool("dry-run")
+		patchFile, _ := cmd.Flags().GetString("file")
+		patchOld, _ := cmd.Flags().GetString("old")
+		patchNew, _ := cmd.Flags().GetString("new")
+		patchRegex, _ := cmd.Flags().GetBool("regex")
+		patchCommitMsg, _ := cmd.Flags().GetString("message")
 		utils.ForEachRepoConcurrently(cfg.Repositories, func(repo config.Repository) {
 			targetFile := filepath.Join(repo.Path, patchFile)
 
@@ -94,10 +91,10 @@ db.example.com' --message 'Update database host'`,
 func init() {
 	rootCmd.AddCommand(patchCmd)
 
-	patchCmd.Flags().StringVar(&patchFile, "file", os.Getenv("PATCH_FILE"), "File path to patch (relative to repo root)")
-	patchCmd.Flags().StringVar(&patchOld, "old", os.Getenv("PATCH_OLD"), "Text or pattern to replace")
-	patchCmd.Flags().StringVar(&patchNew, "new", os.Getenv("PATCH_NEW"), "Replacement text")
-	patchCmd.Flags().BoolVar(&dryRun, "dry-run", false, "Perform a dry run without modifying files")
-	patchCmd.Flags().BoolVar(&patchRegex, "regex", false, "Treat --old as regular expression")
-	patchCmd.Flags().StringVar(&patchCommitMsg, "message", os.Getenv("PATCH_COMMIT_MSG"), "Commit message to use (optional)")
+	patchCmd.Flags().String("file", os.Getenv("PATCH_FILE"), "File path to patch (relative to repo root)")
+	patchCmd.Flags().String("old", os.Getenv("PATCH_OLD"), "Text or pattern to replace")
+	patchCmd.Flags().String("new", os.Getenv("PATCH_NEW"), "Replacement text")
+	patchCmd.Flags().Bool("dry-run", false, "Perform a dry run without modifying files")
+	patchCmd.Flags().Bool("regex", false, "Treat --old as regular expression")
+	patchCmd.Flags().String("message", os.Getenv("PATCH_COMMIT_MSG"), "Commit message to use (optional)")
 }
