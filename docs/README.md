@@ -23,12 +23,10 @@ Download the latest release from below link and place the executable alongside y
 https://github.com/immarktube/dockyard-cli/releases
 ```text
 /your-workspace/
-├── dockyard-cli         # Dockyard CLI executable file
-├── .dockyard.yaml       # Dockyard config file
-├── kubernetesDemo       # example repository 1
-├── careeranalyse-web    # example repository 2
-├── readList             # example repository 3
-└── ...                  # other repositories
+├── dockyard-cli         # Dockyard CLI 可执行文件（需放在此处）
+├── kubernetesDemo       # 仓库1
+├── careeranalyse-web    # 仓库2
+├── readList             # 仓库3
 ```
 
 ### Usage
@@ -40,7 +38,7 @@ https://github.com/immarktube/dockyard-cli/releases
 dockyard --help
 ```
 
-For detailed usage instructions, visit: [Dockyard CLI Documentation](./cmd/cmdRoot.md)
+For detailed usage instructions, visit: [Dockyard CLI Documentation](https://github.com/immarktube/dockyard-cli/wiki)
 
 ---
 
@@ -54,6 +52,7 @@ dockyard-cli/
 ├── docs/            # Documentation
 ├── executor/        # Task runner
 ├── utils/           # Utility functions
+├── .dockyard.yaml   # Example config file
 ├── .env             # Example config file
 ├── main.go          # Entry point
 └── build.sh         # Build script
