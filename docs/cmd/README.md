@@ -1,44 +1,129 @@
 # Dockyard CLI — Commands Index
 
-Synopsis\
-A central index page listing available commands, global options, directory conventions, and examples. Each command should have its own detail page under `docs/cmd/`.
+## Dockyard CLI Commands Overview
 
-Prerequisites
+A quick navigation guide to all available Dockyard CLI commands.
 
-* Compiled executable placed as a sibling to your local repositories (see Directory Structure).
-* Each repository listed in the tool configuration is available locally.
-* `git` installed and repositories are in a committable state.
+***
 
-Global notes
+### 📁 Repository Operations
 
-* Executable names: `dockyard-cli` or `dockyard`
-* Supported project types: Go, Java (Spring Boot / Maven), TypeScript / JavaScript (npm), Vue, etc.
-* Configuration: tool reads repository list and concurrency settings from project configuration (see code for details).
+#### [**`checkout`**](https://chatgpt.com/c/6824c3dd-6e10-8004-a433-53844fa7d0ad#checkout)
 
-Global flags / environment variables Common options can be supplied as flags or via environment variables:
+Batch checkout branch in all repositories.
 
-* `--max-concurrency` the maximum number of concurrent operations (integer) defaults to 5
-* `--no-hook` (boolean) disable pre-operation and post-operation hooks
+#### [**`clone`**](https://chatgpt.com/c/6824c3dd-6e10-8004-a433-53844fa7d0ad#clone)
 
-Commands index
+Run `git clone` across all repositories.
 
-1. [`checkout`](dockyard-checkout-command.md) - Checkout a specific branch or commit in each repository.
-2. `clone` - Clone repositories listed in configuration.
-3. `complete` - complete command placeholder.
-4. `copyFile` - Copy a file to each repository and optionally commit.
-5. `createPR` - Create pull requests for changes in each repository.
-6. `exec` - Execute a git command across configured repositories.
-7. `help` - Show help for Dockyard CLI or a specific command.
-8. `patch` - Modify a specific file in all repositories and commit the change.
-9. `push` - Push committed changes to remote repositories for all the configured repositories.
-10. `run` - Run a shell command in each repository.
-11. `status` - Show git status for each repository.
-12. `sync` - Run 'git fetch' and 'git pull' across all repositories
-13. `updateYaml` - Update a YAML file across configured repositories and optionally commit.
+#### [**`sync`**](https://chatgpt.com/c/6824c3dd-6e10-8004-a433-53844fa7d0ad#sync)
 
-Documentation maintenance
+Run `git fetch` and `git pull` across all repositories.
 
-* Keep one detailed page per command under `docs/cmd/`, e.g.:
-  * `docs/cmd/updateYaml.md`
-  * `docs/cmd/listRepos.md`
-* Keep `docs/cmd/cmdRoot.md` as a concise index linking to those pages.
+#### [**`status`**](https://chatgpt.com/c/6824c3dd-6e10-8004-a433-53844fa7d0ad#status)
+
+Run `git status` across all repositories.
+
+#### [**`push`**](https://chatgpt.com/c/6824c3dd-6e10-8004-a433-53844fa7d0ad#push)
+
+Run `git push` across all repositories.
+
+#### [**`exec`**](https://chatgpt.com/c/6824c3dd-6e10-8004-a433-53844fa7d0ad#exec)
+
+Run arbitrary git command across all repositories.
+
+#### [**`run`**](https://chatgpt.com/c/6824c3dd-6e10-8004-a433-53844fa7d0ad#run)
+
+Run arbitrary shell command in all repositories.
+
+***
+
+### 📝 File & Config Operations
+
+#### [**`copyFile`**](https://chatgpt.com/c/6824c3dd-6e10-8004-a433-53844fa7d0ad#copyfile)
+
+Copy a file from one path to another inside each repository.
+
+#### [**`patch`**](https://chatgpt.com/c/6824c3dd-6e10-8004-a433-53844fa7d0ad#patch)
+
+Modify a specific file in all repositories and commit the change.
+
+#### [**`updateYaml`**](https://chatgpt.com/c/6824c3dd-6e10-8004-a433-53844fa7d0ad#updateyaml)
+
+Modify a specific YAML file in all repositories and commit the change.
+
+***
+
+### 🔀 Pull Request Operations
+
+#### [**`createPR`**](https://chatgpt.com/c/6824c3dd-6e10-8004-a433-53844fa7d0ad#createpr)
+
+Create pull requests for all modified repositories.
+
+***
+
+### 🧰 Utility
+
+#### [**`completion`**](https://chatgpt.com/c/6824c3dd-6e10-8004-a433-53844fa7d0ad#completion)
+
+Generate the autocompletion script for the specified shell.
+
+#### [**`help`**](https://chatgpt.com/c/6824c3dd-6e10-8004-a433-53844fa7d0ad#help)
+
+Help about any command.
+
+***
+
+## Command Details
+
+### [`checkout`](dockyard-checkout-command.md)
+
+Batch checkout branch in all repositories.
+
+### [`clone`](dockyard-clone-command.md)
+
+Run `git clone` across all repositories.
+
+### `sync`
+
+Run `git fetch` and `git pull` across all repositories.
+
+### `status`
+
+Run `git status` across all repositories.
+
+### `push`
+
+Run `git push` across all repositories.
+
+### `exec`
+
+Run arbitrary git command across all repositories.
+
+### `run`
+
+Run arbitrary shell command in all repositories.
+
+### [`copyFile`](dockyard-copyfile-command.md)
+
+Copy a file from one path to another inside each repository.
+
+### `patch`
+
+Modify a specific file in all repositories and commit the change.
+
+### `updateYaml`
+
+Modify a specific YAML file in all repositories and commit the change.
+
+### [`createPR`](dockyard-createpr-command.md)
+
+Create pull requests for all modified repositories.
+
+### [`completion`](dockyard-completion-command.md)
+
+Generate the autocompletion script for the specified shell.
+
+### `help`
+
+Help about any command.
