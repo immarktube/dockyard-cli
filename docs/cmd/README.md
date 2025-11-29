@@ -22,7 +22,7 @@ Global flags / environment variables Common options can be supplied as flags or 
 
 Commands index
 
-1. `checkout` - Checkout a specific branch or commit in each repository.
+1. [`checkout`](checkout-command-guide.md) - Checkout a specific branch or commit in each repository.
 2. `clone` - Clone repositories listed in configuration.
 3. `complete` - complete command placeholder.
 4. `copyFile` - Copy a file to each repository and optionally commit.
