@@ -40,7 +40,7 @@ https://github.com/immarktube/dockyard-cli/releases
 dockyard --help
 ```
 
-For detailed usage instructions, visit: [Dockyard CLI Documentation](./cmd/cmdRoot.md)
+For detailed usage instructions, visit: [Dockyard CLI Documentation](https://immarktube.gitbook.io/dockyard-cli/)
 
 ---
 
