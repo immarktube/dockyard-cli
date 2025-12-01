@@ -9,3 +9,7 @@
 * [dockyard exec Command](dockyard-exec-command.md)
 * [dockyard help Command](dockyard-help-command.md)
 * [dockyard patch Command](dockyard-patch-command.md)
+* [dockyard push Command](dockyard-push-command.md)
+* [dockyard run Command](dockyard-run-command.md)
+* [dockyard status Command](dockyard-status-command.md)
+* [dockyard sync Command](dockyard-sync-command.md)
