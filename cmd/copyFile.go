@@ -1,13 +1,11 @@
 package cmd
 
 import (
-	"fmt"
 	"io"
 	"os"
 	"path/filepath"
 
 	"github.com/immarktube/dockyard-cli/config"
-	"github.com/immarktube/dockyard-cli/executor"
 	"github.com/immarktube/dockyard-cli/utils"
 	"github.com/spf13/cobra"
 )
@@ -22,11 +20,9 @@ var copyFileCmd = &cobra.Command{
 			return err
 		}
 		maxConcurrency := utils.GetConcurrency(utils.MaxConcurrency, cfg)
-		exec := &executor.RealExecutor{Env: cfg.Env}
 
 		sourcePath, _ := cmd.Flags().GetString("source")
 		targetPath, _ := cmd.Flags().GetString("target")
-		copyCommitMsg, _ := cmd.Flags().GetString("message")
 		copyDryRun, _ := cmd.Flags().GetBool("dry-run")
 
 		utils.ForEachRepoConcurrently(cfg.Repositories, func(repo config.Repository) {
@@ -49,18 +45,7 @@ var copyFileCmd = &cobra.Command{
 				return
 			}
 
-			utils.SafePrint("✅ Copied %s → %s\n", src, dst)
-
-			exec.RunCommand(repo.Path, "git", "add", targetPath)
-			msg := copyCommitMsg
-			if msg == "" {
-				msg = fmt.Sprintf("dockyard: copy file %s", targetPath)
-			}
-			out, err := exec.RunCommand(repo.Path, "git", "commit", "-m", msg)
-			if err != nil {
-				utils.SafeError("❌ Failed to commit in %s: %v\nOutput: %s\\n", repo.Path, err, out)
-				return
-			}
+			utils.SafePrint("✅%s: Copied %s → %s\n", repo.Path, src, dst)
 		}, maxConcurrency)
 
 		return nil
@@ -71,12 +56,14 @@ func init() {
 	rootCmd.AddCommand(copyFileCmd)
 	copyFileCmd.Flags().String("source", "", "Source relative file path (required)")
 	copyFileCmd.Flags().String("target", "", "Target relative file path (required)")
-	copyFileCmd.Flags().String("message", "", "git commit message (required)")
 	copyFileCmd.Flags().Bool("dry-run", false, "Preview the copy and commit without making changes")
 
-	copyFileCmd.MarkFlagRequired("source")
-	copyFileCmd.MarkFlagRequired("target")
-	copyFileCmd.MarkFlagRequired("message")
+	err := copyFileCmd.MarkFlagRequired("source")
+	err = copyFileCmd.MarkFlagRequired("target")
+	err = copyFileCmd.MarkFlagRequired("message")
+	if err != nil {
+		return
+	}
 }
 
 func copyFile(src, dst string) error {

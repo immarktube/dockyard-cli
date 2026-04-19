@@ -1,14 +1,13 @@
 package cmd
 
 import (
-	"fmt"
-	"github.com/immarktube/dockyard-cli/config"
-	"github.com/immarktube/dockyard-cli/executor"
-	"github.com/immarktube/dockyard-cli/utils"
 	"os"
 	"path/filepath"
 	"regexp"
 	"strings"
+
+	"github.com/immarktube/dockyard-cli/config"
+	"github.com/immarktube/dockyard-cli/utils"
 
 	"github.com/spf13/cobra"
 )
@@ -24,14 +23,12 @@ db.example.com' --message 'Update database host'`,
 			return err
 		}
 
-		exec := &executor.RealExecutor{Env: cfg.Env}
 		maxConcurrency := utils.GetConcurrency(utils.MaxConcurrency, cfg)
 		dryRun, _ := cmd.Flags().GetBool("dry-run")
 		patchFile, _ := cmd.Flags().GetString("file")
 		patchOld, _ := cmd.Flags().GetString("old")
 		patchNew, _ := cmd.Flags().GetString("new")
 		patchRegex, _ := cmd.Flags().GetBool("regex")
-		patchCommitMsg, _ := cmd.Flags().GetString("message")
 		utils.ForEachRepoConcurrently(cfg.Repositories, func(repo config.Repository) {
 			targetFile := filepath.Join(repo.Path, patchFile)
 
@@ -69,19 +66,7 @@ db.example.com' --message 'Update database host'`,
 				utils.SafeError("❌ Failed to write %s: %v\n", targetFile, err)
 				return
 			}
-
-			utils.SafePrint("📦 Committing change in %s\n", repo.Path)
-
-			exec.RunCommand(repo.Path, "git", "add", patchFile)
-			msg := patchCommitMsg
-			if msg == "" {
-				msg = fmt.Sprintf("chore: patch file %s", patchFile)
-			}
-			out, err := exec.RunCommand(repo.Path, "git", "commit", "-m", msg)
-			if err != nil {
-				utils.SafeError("❌ Failed to commit in %s: %v\nOutput: %s\\n", repo.Path, err, out)
-				return
-			}
+			utils.SafePrint("✅%s: has updated!\n", repo.Path)
 		}, maxConcurrency)
 
 		return nil
@@ -96,5 +81,4 @@ func init() {
 	patchCmd.Flags().String("new", os.Getenv("PATCH_NEW"), "Replacement text")
 	patchCmd.Flags().Bool("dry-run", false, "Perform a dry run without modifying files")
 	patchCmd.Flags().Bool("regex", false, "Treat --old as regular expression")
-	patchCmd.Flags().String("message", os.Getenv("PATCH_COMMIT_MSG"), "Commit message to use (optional)")
 }
