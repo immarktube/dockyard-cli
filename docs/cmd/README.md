@@ -8,11 +8,11 @@ A quick navigation guide to all available Dockyard CLI commands.
 
 ### 📁 Repository Operations
 
-#### [**`checkout`**](dockyard-checkout-command.md)ß
+#### [**`checkout`**](dockyard-checkout-command.md)
 
 Batch checkout branch in all repositories.
 
-#### [**`clone`**](dockyard-clone-command.md)ß
+#### [**`clone`**](dockyard-clone-command.md)
 
 Run `git clone` across all repositories.
 
@@ -20,7 +20,7 @@ Run `git clone` across all repositories.
 
 Run `git fetch` and `git pull` across all repositories.
 
-#### [**`status`**](dockyard-status-command.md)ß
+#### [**`status`**](dockyard-status-command.md)
 
 Run `git status` across all repositories.
 
