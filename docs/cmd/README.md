@@ -8,31 +8,34 @@ A quick navigation guide to all available Dockyard CLI commands.
 
 ### 📁 Repository Operations
 
-#### [**`checkout`**](https://chatgpt.com/c/6824c3dd-6e10-8004-a433-53844fa7d0ad#checkout)
+#### [**`checkout`**](dockyard-checkout-command.md)ß
 
 Batch checkout branch in all repositories.
 
-#### [**`clone`**](https://chatgpt.com/c/6824c3dd-6e10-8004-a433-53844fa7d0ad#clone)
+#### [**`clone`**](dockyard-clone-command.md)ß
 
 Run `git clone` across all repositories.
 
-#### [**`sync`**](https://chatgpt.com/c/6824c3dd-6e10-8004-a433-53844fa7d0ad#sync)
+#### [**`sync`**](dockyard-sync-command.md)
 
 Run `git fetch` and `git pull` across all repositories.
 
-#### [**`status`**](https://chatgpt.com/c/6824c3dd-6e10-8004-a433-53844fa7d0ad#status)
+#### [**`status`**](dockyard-status-command.md)ß
 
 Run `git status` across all repositories.
 
-#### [**`push`**](https://chatgpt.com/c/6824c3dd-6e10-8004-a433-53844fa7d0ad#push)
+#### [**`apply`**](dockyard-apply-command.md)
+Apply all pending changes in the current branch across all repositories.
+
+#### [**`push`**](dockyard-push-command.md)
 
 Run `git push` across all repositories.
 
-#### [**`exec`**](https://chatgpt.com/c/6824c3dd-6e10-8004-a433-53844fa7d0ad#exec)
+#### [**`exec`**](dockyard-exec-command.md)
 
 Run arbitrary git command across all repositories.
 
-#### [**`run`**](https://chatgpt.com/c/6824c3dd-6e10-8004-a433-53844fa7d0ad#run)
+#### [**`run`**](dockyard-run-command.md)
 
 Run arbitrary shell command in all repositories.
 
@@ -40,15 +43,15 @@ Run arbitrary shell command in all repositories.
 
 ### 📝 File & Config Operations
 
-#### [**`copyFile`**](https://chatgpt.com/c/6824c3dd-6e10-8004-a433-53844fa7d0ad#copyfile)
+#### [**`copyFile`**](dockyard-copyfile-command.md)
 
 Copy a file from one path to another inside each repository.
 
-#### [**`patch`**](https://chatgpt.com/c/6824c3dd-6e10-8004-a433-53844fa7d0ad#patch)
+#### [**`patch`**](dockyard-patch-command.md)
 
 Modify a specific file in all repositories and commit the change.
 
-#### [**`updateYaml`**](https://chatgpt.com/c/6824c3dd-6e10-8004-a433-53844fa7d0ad#updateyaml)
+#### [**`updateYaml`**](dockyard-updateyaml-command.md)
 
 Modify a specific YAML file in all repositories and commit the change.
 
@@ -56,7 +59,7 @@ Modify a specific YAML file in all repositories and commit the change.
 
 ### 🔀 Pull Request Operations
 
-#### [**`createPR`**](https://chatgpt.com/c/6824c3dd-6e10-8004-a433-53844fa7d0ad#createpr)
+#### [**`createPR`**](dockyard-createpr-command.md)
 
 Create pull requests for all modified repositories.
 
@@ -64,66 +67,11 @@ Create pull requests for all modified repositories.
 
 ### 🧰 Utility
 
-#### [**`completion`**](https://chatgpt.com/c/6824c3dd-6e10-8004-a433-53844fa7d0ad#completion)
+#### [**`completion`**](dockyard-completion-command.md)
 
 Generate the autocompletion script for the specified shell.
 
-#### [**`help`**](https://chatgpt.com/c/6824c3dd-6e10-8004-a433-53844fa7d0ad#help)
+#### [**`help`**](dockyard-help-command.md)
 
 Help about any command.
 
-***
-
-## Command Details
-
-### [`checkout`](dockyard-checkout-command.md)
-
-Batch checkout branch in all repositories.
-
-### [`clone`](dockyard-clone-command.md)
-
-Run `git clone` across all repositories.
-
-### `sync`
-
-Run `git fetch` and `git pull` across all repositories.
-
-### `status`
-
-Run `git status` across all repositories.
-
-### `push`
-
-Run `git push` across all repositories.
-
-### `exec`
-
-Run arbitrary git command across all repositories.
-
-### `run`
-
-Run arbitrary shell command in all repositories.
-
-### [`copyFile`](dockyard-copyfile-command.md)
-
-Copy a file from one path to another inside each repository.
-
-### `patch`
-
-Modify a specific file in all repositories and commit the change.
-
-### `updateYaml`
-
-Modify a specific YAML file in all repositories and commit the change.
-
-### [`createPR`](dockyard-createpr-command.md)
-
-Create pull requests for all modified repositories.
-
-### [`completion`](dockyard-completion-command.md)
-
-Generate the autocompletion script for the specified shell.
-
-### `help`
-
-Help about any command.

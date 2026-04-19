@@ -34,7 +34,7 @@ dockyard copyFile --source <source-file> --target <relative-path> [--dry-run]
 #### Copy a script into all repositories
 
 ```bash
-dockyard copyFile --source ./scripts/setup.sh --target scripts/setup.sh --message commit setup.sh
+dockyard copyFile --source ./scripts/setup.sh --target scripts/setup.sh 
 ```
 
 This places `setup.sh` into:

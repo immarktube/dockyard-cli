@@ -1,6 +1,8 @@
 # Table of contents
 
 * [Dockyard CLI — Commands Index](README.md)
+* [dockyard apply Command](dockyard-apply-command.md)
+* [dockyard updateYaml Command](dockyard-updateyaml-command.md)
 * [dockyard checkout Command](dockyard-checkout-command.md)
 * [dockyard clone Command](dockyard-clone-command.md)
 * [dockyard completion Command](dockyard-completion-command.md)

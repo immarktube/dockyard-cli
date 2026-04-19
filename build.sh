@@ -13,5 +13,5 @@ do
     [ "$GOOS" == "windows" ] && output_name="${output_name}.exe"
 
     echo "Building $output_name"
-    GOOS=$GOOS GOARCH=$GOARCH go build -o "build/$output_name"
+    GOOS=$GOOS GOARCH=$GOARCH go build -o "dockyard-release/$output_name"
 done

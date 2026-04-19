@@ -23,7 +23,6 @@ dockyard patch --file <path> --old <regex> --new <string> [flags]
 | `--old`             | Regex pattern to search for (required).                               |
 | `--new`             | The replacement text (required). Supports `\n`, captured groups, etc. |
 | `--dry-run`         | Performs a preview without modifying files.                           |
-| `--message`         | Custom Git commit message. Optional.                                  |
 | `--max-concurrency` | Limit parallel execution across repositories (optional).              |
 | `--regex`           | Treat --old as regular expression                                     |
 
@@ -153,24 +152,6 @@ Dry run output example:
 ```
 [DRY RUN] Would modify app.yaml in repo service-api
 [DRY RUN] Would modify app.yaml in repo user-core
-```
-
-***
-
-### 📝 **Commit Message Override**
-
-```bash
-dockyard patch \
-  --file deployment.yaml \
-  --old 'replicas: 1' \
-  --new 'replicas: 3' \
-  --message "Increase replicas to 3"
-```
-
-Otherwise Dockyard automatically commits with:
-
-```
-dockyard: patch file <filename>
 ```
 
 ***
