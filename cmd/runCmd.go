@@ -2,11 +2,13 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/immarktube/dockyard-cli/config"
-	"github.com/immarktube/dockyard-cli/utils"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"strings"
+
+	"github.com/immarktube/dockyard-cli/config"
+	"github.com/immarktube/dockyard-cli/utils"
 
 	"github.com/spf13/cobra"
 )
@@ -23,20 +25,26 @@ var runCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		for _, repo := range cfg.Repositories {
-			fmt.Printf("\n==> Running command in %s\n", repo.Path)
-			c := exec.Command("sh", "-c", commandStr)
-			c.Dir = repo.Path
-			c.Stdout = os.Stdout
-			c.Stderr = os.Stderr
-			if err := c.Run(); err != nil {
-				_, _ = fmt.Fprintf(os.Stderr, "Error running command in %s: %v\n", repo.Path, err)
+		maxConcurrency := utils.GetConcurrency(utils.MaxConcurrency, cfg)
+		script := args[0]
+
+		if !filepath.IsAbs(script) {
+			abs, err := filepath.Abs(script)
+			if err == nil {
+				script = abs
 			}
 		}
-		maxConcurrency := utils.GetConcurrency(utils.MaxConcurrency, cfg)
+		fmt.Printf("\n==> Execute File Path in %s\n", script)
 		utils.ForEachRepoConcurrently(cfg.Repositories, func(repo config.Repository) {
 			fmt.Printf("\n==> Running command in %s\n", repo.Path)
-			c := exec.Command("sh", "-c", commandStr)
+			var c *exec.Cmd
+			if strings.HasSuffix(args[0], ".sh") {
+				c = exec.Command("sh", script)
+			} else if strings.HasSuffix(args[0], ".py") {
+				c = exec.Command("python", args[0])
+			} else {
+				c = exec.Command("sh", "-c", commandStr)
+			}
 			c.Dir = repo.Path
 			c.Stdout = os.Stdout
 			c.Stderr = os.Stderr
