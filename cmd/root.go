@@ -2,17 +2,25 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/immarktube/dockyard-cli/utils"
 	"os"
+
+	"github.com/immarktube/dockyard-cli/utils"
 
 	"github.com/spf13/cobra"
 )
+
+var version = "1.1.0"
+var versionFlag bool
 
 var rootCmd = &cobra.Command{
 	Use:   "dockyard",
 	Short: "Dockyard is a multi-repo Git management tool",
 	Long:  `Dockyard helps you perform batch Git operations like pull, push, status, or running scripts across multiple repositories from a central CLI interface.`,
 	Run: func(cmd *cobra.Command, args []string) {
+		if versionFlag {
+			utils.SafePrint("dockyard-cli version %s\n", version)
+			return
+		}
 		utils.SafePrint("Welcome to Dockyard! Use `dockyard --help` to get started.")
 	},
 }
@@ -35,4 +43,5 @@ func init() {
 	rootCmd.AddCommand(runCmd)
 	rootCmd.PersistentFlags().IntVar(&utils.MaxConcurrency, "max-concurrency", 5, "Global max concurrency (overridden by command-level settings if set)")
 	rootCmd.PersistentFlags().BoolVar(&utils.NoHookFlag, "no-hook", false, "Disable pre/post hooks")
+	rootCmd.Flags().BoolVarP(&versionFlag, "version", "v", false, "version")
 }
